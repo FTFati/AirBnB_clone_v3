@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Endpoint (route) will be to return the status of your API"""
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 from flask_cors import CORS
