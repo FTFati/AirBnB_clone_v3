@@ -3,7 +3,6 @@
 Create a new view for Review objects - handles all default RESTful API
 '''
 
-# Import necessary modules
 from flask import abort, jsonify, request
 from models.place import Place
 from models.review import Review
