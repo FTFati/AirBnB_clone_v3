@@ -4,7 +4,6 @@ Contains the FileStorage class
 """
 
 import json
-import models
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
@@ -12,7 +11,6 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-from hashlib import md5
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -72,31 +70,12 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
-        """
-        Returns the object based on the class name and its ID, or
-        None if not found
-        """
-        if cls not in classes.values():
-            return None
+        """retrieve an object from the database by class and id"""
+        return self.all(cls).get(cls.__name__ + '.' + id)
 
-            all_cls = models.storage.all(cls)
-            for value in all_cls.values():
-                if (value.id == id):
-                    return value
-
-            return None
-
-        def count(self, cls=None):
-            """
-            count the number of objects in storage
-            """
-            all_class = classes.values()
-
-            if not cls:
-                count = 0
-                for clas in all_class:
-                    count += len(models.storage.all(clas).values())
-            else:
-                count = len(models.storage.all(cls).values())
-
-        return count
+    def count(self, cls=None):
+        """count the number of objects in the database"""
+        if cls:
+            return len(self.all(cls))
+        else:
+            return sum(len(self.all(c)) for c in classes.values())
