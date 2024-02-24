@@ -76,19 +76,25 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
-        """query on the current database session"""
-        if cls:
-            obj = self.__session.query(cls).get(id)
-            return obj
+        """
+        Returns the object based on the class name and its ID, or
+        None if not found
+        """
+        if cls not in classes.values():
             return None
 
-        def count(self, cls=None):
-            """Returns the number of objects
-                in storage matching the given class
-            """
-            if cls:
-                all_objs_dict = self.all(cls)
-                count = len(all_objs_dict)
-            else:
-                count = len(self.all())
-            return count
+        all_cls = models.storage.all(cls)
+        for value in all_cls.values():
+            if (value.id == id):
+                return value
+
+        return None
+
+    def count(self, cls=None):
+        """Returns the number of objects in storage matching the given class"""
+        if cls:
+            all_objs_dict = self.all(cls)
+            count = len(all_objs_dict)
+        else:
+            count = len(self.all())
+        return count
